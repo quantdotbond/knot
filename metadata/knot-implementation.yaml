@@ -1,0 +1,133 @@
+# KNOT implementation manifest (machine-readable implementation identity).
+#
+# Every value here was established by inspecting the repository at the recorded
+# core identity. Values that could not be established are written as `unknown`.
+# Nothing in this file is a security claim. Verify the core identity with
+# `scripts/core_digest.sh --check`; dynamic build facts (git commit, toolchain)
+# are produced per run by `scripts/build_meta.sh` into ci-artifacts/build-metadata.json.
+
+manifest_version: 1
+scheme: KNOT
+scheme_aliases:
+  - CCTS                      # identifier used throughout the source (namespace `ccts`, domain strings `CCTSv1|...`)
+  - Chord Tensor Trapdoor Signature
+primitive: digital-signature  # hash-and-sign (GPV-style) over a tensor trapdoor one-way function
+primitive_details:
+  construction: "Sigma^3DB hash-and-sign over Narayanan's 3-dimensional doubly-boundary VWZ tensor trapdoor"
+  hash_function: SHAKE256 (self-contained FIPS 202 implementation, include/ccts/shake.hpp)
+  field: "prime field F_q, q < 2^16 (two-byte field elements)"
+  randomized_signing: true    # 16-byte salt + SamplePre3DB coin (+ off-support coins in tri_chord)
+  deterministic_under_seeded_drbg: true
+
+implementation_revision:
+  # Static identity of the immutable core = include/ccts/*.hpp (see metadata/core-digests.sha256).
+  core_tree_digest_sha256: f6c7ec99058431b4a6c3ea7d6556a678f52e22103be28c08d719f8a2de79386d
+  core_files: 12
+  core_lines: 2540
+  git_commit_at_manifest_generation: 4d6694a
+  note: >
+    The git commit is informational; the authoritative identity is the core tree
+    digest. History: 51c0e07e... = content as validated by the assurance layer;
+    the current digest differs from it only by comment text (document and planning
+    references removed from scheme.hpp and serialize.hpp); no code, constant or output changed.
+
+specification:
+  identifier: "repository documents (README, design notes, report); unversioned"
+  revision: unknown            # documents are untagged and unversioned
+  external_basis:
+    - "V. Narayanan, Trapdoor one-way functions from tensors, IACR ePrint 2025/624 (scheme Sigma^3DB)"
+  formal_specification_document: none
+  domain_separation_prefix: "CCTSv1|"
+
+language: C++20
+build_system: GNU Make (Makefile) ; header-only library, no external C/C++ dependencies
+supported_platforms_observed:
+  - "Linux x86-64, GCC 15.2 (tested in this repository)"
+  - "README states: tested with g++ 13"
+platform_notes:
+  - "include/ccts/ntt.hpp uses `unsigned __int128`: 32-bit targets and MSVC do not compile (finding KNOT-CORE-001)"
+
+public_api:
+  header: include/ccts/scheme.hpp
+  namespace: ccts
+  operations:
+    - "KeyPair keygen(const Parameters&, Drbg&, Mode, const ChordDiagram*, const OrientedChordDiagram*, const LabeledChordDiagram*)"
+    - "KeyPair keygen(const Parameters&)                              # system entropy"
+    - "Signature sign(const uint8_t*, size_t, const SecretKey&, Drbg&, uint32_t* retries, PolyBackend)"
+    - "Signature sign(const std::vector<uint8_t>&, const SecretKey&, Drbg&)"
+    - "Signature sign(std::span<const std::byte>, const SecretKey&)  # system entropy"
+    - "bool verify(const uint8_t*, size_t, const Signature&, const PublicKey&)"
+    - "bool verify(const std::vector<uint8_t>&, const Signature&, const PublicKey&)"
+    - "bool verify(std::span<const std::byte>, const Signature&, const PublicKey&)"
+    - "std::vector<uint8_t> PublicKey::serialize() const ; static PublicKey PublicKey::deserialize(const std::vector<uint8_t>&)"
+    - "std::vector<uint8_t> SecretKey::serialize() const              # no deserializer exists"
+    - "std::vector<uint8_t> Signature::serialize() const              # dense 2-byte format; no deserializer exists"
+    - "serialize_signature_packed / deserialize_signature_packed      # tri_chord wire format"
+
+modes:                         # ccts::Mode
+  - {name: tensor_reference, value: 0, parameters: Parameters::for_k}
+  - {name: chord_tensor,     value: 1, parameters: Parameters::for_k}
+  - {name: chord_structured, value: 2, parameters: Parameters::for_k_structured}
+  - {name: chord_labeled,    value: 3, parameters: Parameters::for_k_labeled}
+  - {name: tri_chord,        value: 4, parameters: Parameters::for_k_tri}
+
+parameter_sets:
+  # There are no named security-level parameter sets. Parameters are a family
+  # indexed by k (format (2k+1) x (k+1) x (k+1)); q is derived from k and mode.
+  # The repository calls every exercised value a toy parameter.
+  naming: "<mode>/k=<k>"
+  security_level_claimed: none
+  exercised:
+    known_answer_vectors: [tensor_reference/k=4, tensor_reference/k=8, chord_tensor/k=4, chord_tensor/k=8,
+                           chord_structured/k=4, chord_structured/k=8, chord_labeled/k=4, chord_labeled/k=8,
+                           tri_chord/k=8, tri_chord/k=12]
+    benchmarks: "all five modes at k in {8, 16, 32, 48}"
+    limits: "q < 2^16; chord modes k <= 127; tri_chord requires k+1+m <= 2k+1 (k >= 8 with the default margin)"
+
+randomness:
+  production_source: "std::random_device (32 bytes) -> ccts::Drbg (SHAKE256 stream), include/ccts/rng.hpp"
+  injectable_for_testing: true   # every operation accepts an explicit Drbg&; seeded Drbg is deterministic
+  test_adapter: production/rng/deterministic_test_rng.hpp
+
+serialization:
+  byte_order: little-endian
+  field_element_width_dense: 2 bytes
+  public_key_formats: [dense-tensor, tri-packed (tag 0x54, bit-packed, seed-derived support)]
+  signature_formats: [dense (salt || u || v, 2-byte elements), packed (tri_chord: salt || radix-q(u||v))]
+  secret_key_format: dense (serialize only)
+
+implementations:
+  - name: portable-reference
+    type: reference
+    source_location: include/ccts/
+    notes: "single portable C++ implementation; no SIMD, assembly, or architecture-specific code paths"
+  - name: polynomial-backend-naive
+    type: reference
+    source_location: include/ccts/poly.hpp
+    selected_by: PolyBackend::naive (autoselect below k=4096)
+  - name: polynomial-backend-fast
+    type: portable
+    source_location: include/ccts/fastpoly.hpp, include/ccts/ntt.hpp
+    selected_by: PolyBackend::fast (autoselect at k>=4096)
+    parity_requirement: "bit-identical preimages/signatures to the naive backend (tested)"
+
+existing_verification_assets:
+  unit_tests: tests/test_main.cpp (3480 checks at the recorded core identity)
+  vectors: vectors/kat.txt (10 deterministic vectors generated by tests/gen_vectors.cpp)
+  benchmarks: bench/bench_main.cpp -> results/*.csv ; analysis/analyze.py
+  ci: none before the assurance layer
+
+status:
+  standardized: false
+  externally_audited: false
+  protocol_standardized: false
+  license: unknown             # no LICENSE file in the repository
+  release_process: none        # no tags, no releases, no remote configured at manifest time
+  maturity: experimental       # see the production-readiness status vocabulary
+
+claims:
+  constant_time: not-claimed   # README: "Field arithmetic, sampling, and interpolation are not constant-time"
+  side_channel_hardened: false
+  production_approved: false
+  cryptographic_security_proof: none
+  post_quantum_security: not-claimed

@@ -1,0 +1,16 @@
+# KNOT core identity: SHA-256 of every file in include/ccts/ (not modified by the
+# assurance layer). Verify with: scripts/core_digest.sh --check
+# Regenerate ONLY for a deliberate, reviewed core change: scripts/core_digest.sh --update
+626125ece352996fdc1ce476d9554ec197db4008b847b11aa90912a94a60bdd7  include/ccts/chord.hpp
+3dc15d2e88e7eaf9bb852c306dab7a4d75b868d853c32921616c35bfcac12766  include/ccts/fastpoly.hpp
+243bfd6faa5d93ae75b1102283ebba0e517c6dad7a6010cb22c3ed63895a86dd  include/ccts/field.hpp
+658bfa391d81c7584fa667b4a310f9fcd915720359de35f328cec79054e02112  include/ccts/matrix.hpp
+ae902136fdf286d0053a7bd6803390520e30211bf6392691abd56e86934431bf  include/ccts/ntt.hpp
+3d0cc77b8f3c8573b1e85a74ab4d5ddc633c3d481468e03267fa1efa432fdb14  include/ccts/poly.hpp
+0400703db2bc8108936f4fc7d33b9c7c6dcfd7560f304143fe59d0bd0d452a42  include/ccts/rng.hpp
+57b300c8d38a62dac7633fe51fb92bf64ce1ded5489e314fcf9e6530e2571926  include/ccts/scheme.hpp
+f3b9b3c7492a5099ed1cde5eb26465e8dc96a452b8fb4d50db05d01b35301d13  include/ccts/serialize.hpp
+262e723dcc54dc76dcaa7886b70d610aaa544e9c0c67cc2ac8ce48e5b25ede13  include/ccts/shake.hpp
+ef9d4d16e3478768f0957ce8080fbb145c542fa038b500ad5097c4e95a0067b2  include/ccts/tensor.hpp
+c3de61a7252d5ea9c581776d49d17f05865e938d65d574c0a8ac27f96cbeb962  include/ccts/vwz.hpp
+# tree-digest f6c7ec99058431b4a6c3ea7d6556a678f52e22103be28c08d719f8a2de79386d

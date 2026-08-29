@@ -1,0 +1,37 @@
+# clang-tidy configuration for the KNOT production-assurance layer.
+# Applied to project-owned code under production/ (blocking). The immutable
+# core (include/ccts/) is analysed with the same checks but reported
+# separately and never modified to satisfy them (see scripts/ci.sh
+# static-clang-tidy-core).
+# Disabled on purpose (documented): cert-err33-c (unchecked printf/fprintf
+# return values in test drivers), concurrency-mt-unsafe (getenv in
+# single-threaded harnesses), misc-const-correctness (style), and
+# portability-avoid-pragma-once (every supported compiler honours it), and
+# bugprone-exception-escape (test/tool mains deliberately let exceptions
+# terminate the process with a nonzero status).
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-exception-escape,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  cert-*,
+  -cert-err58-cpp,
+  -cert-err33-c,
+  clang-analyzer-*,
+  concurrency-*,
+  -concurrency-mt-unsafe,
+  misc-*,
+  -misc-non-private-member-variables-in-classes,
+  -misc-include-cleaner,
+  -misc-use-anonymous-namespace,
+  -misc-const-correctness,
+  performance-*,
+  portability-*,
+  -portability-avoid-pragma-once,
+  readability-container-size-empty,
+  readability-misleading-indentation,
+  readability-redundant-string-cstr
+WarningsAsErrors: ''
+HeaderFilterRegex: '(production|include/ccts)/.*'
+FormatStyle: none

@@ -1,0 +1,16 @@
+# Dependency inventory for this repository:
+#   * C/C++: none (header-only core, no third-party code)
+#   * CI: GitHub Actions (pinned by major version + SHA where noted in workflows)
+#   * Python (analysis/, scripts/): stdlib only in scripts/; analysis/ uses
+#     numpy/pandas/matplotlib (optional, unpinned upstream) - tracked below.
+#   * Auxiliary toolchain: nixpkgs revision pinned in scripts/toolchain-env.sh
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    labels: [dependencies, ci]
+  - package-ecosystem: pip
+    directory: /analysis
+    schedule: { interval: monthly }
+    labels: [dependencies, analysis]

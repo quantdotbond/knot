@@ -1,0 +1,13 @@
+# Review requirements for security-critical areas.
+# The KNOT cryptographic core is not modified by the assurance layer;
+# any change to it must be reviewed by the scheme owner and must
+# regenerate metadata/core-digests.sha256 and the KAT corpora deliberately.
+/include/ccts/                 @quantdotbond
+/metadata/                     @quantdotbond
+/vectors/                      @quantdotbond
+/production/adapter/           @quantdotbond
+/production/rng/               @quantdotbond
+/production/fuzz/corpus/*/regressions/ @quantdotbond
+/scripts/ci.sh                 @quantdotbond
+/.github/                      @quantdotbond
+/metadata/findings/                @quantdotbond

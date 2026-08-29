@@ -1,0 +1,1012 @@
+{
+ "cycle_source": "rdtscp",
+ "environment": {
+  "arch": "x86_64",
+  "ci": "false",
+  "ci_run_id": "",
+  "commit": "4d6694a992d036d11baeb699abdf15263898cc58",
+  "compiler": "g++ (GCC) 15.2.1 20250813",
+  "core_tree_digest_sha256": "51c0e07e25c6e14809ca16b728ba76dedc23355ee996baf2b8c021a848eac2e9",
+  "cpu": "Intel(R) Core(TM) i7-10610U CPU @ 1.80GHz",
+  "distro": "Arch Linux",
+  "kernel": "6.17.7-arch1-1",
+  "optimization_flags": "-std=c++20 -O2",
+  "os": "Linux"
+ },
+ "kind": "microbenchmark",
+ "record": "benchmark-summary",
+ "record_version": 1,
+ "results": [
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 72,
+     "bytes": 40133,
+     "peak_live": 25336
+    },
+    "sign": {
+     "allocations": 66,
+     "bytes": 1744,
+     "peak_live": 540
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 144,
+     "peak_live": 136
+    }
+   },
+   "k": 8,
+   "mode": "tensor_reference",
+   "ops": {
+    "keygen": {
+     "mean_ns": 426684,
+     "median_cycles": 872888,
+     "median_ns": 378963,
+     "min_ns": 356645,
+     "n": 60,
+     "ops_per_s": 2638.8,
+     "p95_ns": 580199,
+     "p99_ns": 582571
+    },
+    "sign": {
+     "mean_ns": 24177,
+     "median_cycles": 54474,
+     "median_ns": 23675,
+     "min_ns": 23328,
+     "n": 60,
+     "ops_per_s": 42238.6,
+     "p95_ns": 26270,
+     "p99_ns": 34622
+    },
+    "verify": {
+     "mean_ns": 27025,
+     "median_cycles": 62342,
+     "median_ns": 27091,
+     "min_ns": 24833,
+     "n": 60,
+     "ops_per_s": 36912.6,
+     "p95_ns": 28019,
+     "p99_ns": 31857
+    }
+   },
+   "parameter_set": "tensor_reference/k=8",
+   "q": 37,
+   "sizes": {
+    "public_key": 2774,
+    "secret_key": 559,
+    "signature": 64,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 7592,
+    "sign": 6440,
+    "verify": 6440
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 107,
+     "bytes": 262677,
+     "peak_live": 164280
+    },
+    "sign": {
+     "allocations": 108,
+     "bytes": 4944,
+     "peak_live": 1020
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 272,
+     "peak_live": 264
+    }
+   },
+   "k": 16,
+   "mode": "tensor_reference",
+   "ops": {
+    "keygen": {
+     "mean_ns": 2984411,
+     "median_cycles": 6710850,
+     "median_ns": 2912738,
+     "min_ns": 2541043,
+     "n": 60,
+     "ops_per_s": 343.3,
+     "p95_ns": 3980541,
+     "p99_ns": 4746133
+    },
+    "sign": {
+     "mean_ns": 31370,
+     "median_cycles": 71300,
+     "median_ns": 30969,
+     "min_ns": 30216,
+     "n": 60,
+     "ops_per_s": 32290.4,
+     "p95_ns": 32807,
+     "p99_ns": 44869
+    },
+    "verify": {
+     "mean_ns": 72482,
+     "median_cycles": 168892,
+     "median_ns": 73330,
+     "min_ns": 66219,
+     "n": 60,
+     "ops_per_s": 13637.0,
+     "p95_ns": 74810,
+     "p99_ns": 75049
+    }
+   },
+   "parameter_set": "tensor_reference/k=16",
+   "q": 67,
+   "sizes": {
+    "public_key": 19094,
+    "secret_key": 1487,
+    "signature": 96,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 7608,
+    "sign": 6440,
+    "verify": 6440
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 174,
+     "bytes": 1894309,
+     "peak_live": 1176376
+    },
+    "sign": {
+     "allocations": 190,
+     "bytes": 15960,
+     "peak_live": 1980
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 536,
+     "peak_live": 520
+    }
+   },
+   "k": 32,
+   "mode": "tensor_reference",
+   "ops": {
+    "keygen": {
+     "mean_ns": 32335681,
+     "median_cycles": 74072776,
+     "median_ns": 32149936,
+     "min_ns": 31603862,
+     "n": 60,
+     "ops_per_s": 31.1,
+     "p95_ns": 34553154,
+     "p99_ns": 39887452
+    },
+    "sign": {
+     "mean_ns": 85243,
+     "median_cycles": 195972,
+     "median_ns": 85083,
+     "min_ns": 78993,
+     "n": 60,
+     "ops_per_s": 11753.2,
+     "p95_ns": 95728,
+     "p99_ns": 101394
+    },
+    "verify": {
+     "mean_ns": 480162,
+     "median_cycles": 1122376,
+     "median_ns": 487192,
+     "min_ns": 439481,
+     "n": 60,
+     "ops_per_s": 2052.6,
+     "p95_ns": 502387,
+     "p99_ns": 510940
+    }
+   },
+   "parameter_set": "tensor_reference/k=32",
+   "q": 131,
+   "sizes": {
+    "public_key": 141590,
+    "secret_key": 4879,
+    "signature": 160,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 7624,
+    "sign": 6456,
+    "verify": 6456
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 179,
+     "bytes": 46680,
+     "peak_live": 25356
+    },
+    "sign": {
+     "allocations": 66,
+     "bytes": 1744,
+     "peak_live": 540
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 144,
+     "peak_live": 136
+    }
+   },
+   "k": 8,
+   "mode": "chord_tensor",
+   "ops": {
+    "keygen": {
+     "mean_ns": 271808,
+     "median_cycles": 625142,
+     "median_ns": 271355,
+     "min_ns": 264148,
+     "n": 60,
+     "ops_per_s": 3685.2,
+     "p95_ns": 281173,
+     "p99_ns": 284602
+    },
+    "sign": {
+     "mean_ns": 16910,
+     "median_cycles": 38258,
+     "median_ns": 16628,
+     "min_ns": 16132,
+     "n": 60,
+     "ops_per_s": 60139.5,
+     "p95_ns": 18358,
+     "p99_ns": 29078
+    },
+    "verify": {
+     "mean_ns": 18469,
+     "median_cycles": 42848,
+     "median_ns": 18621,
+     "min_ns": 17604,
+     "n": 60,
+     "ops_per_s": 53702.8,
+     "p95_ns": 18731,
+     "p99_ns": 20332
+    }
+   },
+   "parameter_set": "chord_tensor/k=8",
+   "q": 37,
+   "sizes": {
+    "public_key": 2774,
+    "secret_key": 579,
+    "signature": 64,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 7592,
+    "sign": 6424,
+    "verify": 6424
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 310,
+     "bytes": 287928,
+     "peak_live": 164316
+    },
+    "sign": {
+     "allocations": 108,
+     "bytes": 4944,
+     "peak_live": 1020
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 272,
+     "peak_live": 264
+    }
+   },
+   "k": 16,
+   "mode": "chord_tensor",
+   "ops": {
+    "keygen": {
+     "mean_ns": 2707964,
+     "median_cycles": 6217366,
+     "median_ns": 2698579,
+     "min_ns": 2579430,
+     "n": 60,
+     "ops_per_s": 370.6,
+     "p95_ns": 2826805,
+     "p99_ns": 2916408
+    },
+    "sign": {
+     "mean_ns": 31512,
+     "median_cycles": 71418,
+     "median_ns": 31020,
+     "min_ns": 30466,
+     "n": 60,
+     "ops_per_s": 32237.3,
+     "p95_ns": 33849,
+     "p99_ns": 45327
+    },
+    "verify": {
+     "mean_ns": 72732,
+     "median_cycles": 168930,
+     "median_ns": 73346,
+     "min_ns": 69599,
+     "n": 60,
+     "ops_per_s": 13634.0,
+     "p95_ns": 74525,
+     "p99_ns": 75077
+    }
+   },
+   "parameter_set": "chord_tensor/k=16",
+   "q": 67,
+   "sizes": {
+    "public_key": 19094,
+    "secret_key": 1523,
+    "signature": 96,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 7608,
+    "sign": 6440,
+    "verify": 6440
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 569,
+     "bytes": 1993832,
+     "peak_live": 1176444
+    },
+    "sign": {
+     "allocations": 190,
+     "bytes": 15960,
+     "peak_live": 1980
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 536,
+     "peak_live": 520
+    }
+   },
+   "k": 32,
+   "mode": "chord_tensor",
+   "ops": {
+    "keygen": {
+     "mean_ns": 32795678,
+     "median_cycles": 75370178,
+     "median_ns": 32713138,
+     "min_ns": 32125621,
+     "n": 60,
+     "ops_per_s": 30.6,
+     "p95_ns": 33499247,
+     "p99_ns": 33669634
+    },
+    "sign": {
+     "mean_ns": 82862,
+     "median_cycles": 190046,
+     "median_ns": 82514,
+     "min_ns": 80731,
+     "n": 60,
+     "ops_per_s": 12119.2,
+     "p95_ns": 87241,
+     "p99_ns": 100300
+    },
+    "verify": {
+     "mean_ns": 470962,
+     "median_cycles": 1094926,
+     "median_ns": 475274,
+     "min_ns": 450209,
+     "n": 60,
+     "ops_per_s": 2104.0,
+     "p95_ns": 485624,
+     "p99_ns": 492872
+    }
+   },
+   "parameter_set": "chord_tensor/k=32",
+   "q": 131,
+   "sizes": {
+    "public_key": 141590,
+    "secret_key": 4947,
+    "signature": 160,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 7608,
+    "sign": 6440,
+    "verify": 6440
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 4404,
+     "bytes": 169950,
+     "peak_live": 25645
+    },
+    "sign": {
+     "allocations": 66,
+     "bytes": 1744,
+     "peak_live": 540
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 144,
+     "peak_live": 136
+    }
+   },
+   "k": 8,
+   "mode": "chord_structured",
+   "ops": {
+    "keygen": {
+     "mean_ns": 419708,
+     "median_cycles": 957112,
+     "median_ns": 415450,
+     "min_ns": 403646,
+     "n": 60,
+     "ops_per_s": 2407.0,
+     "p95_ns": 453877,
+     "p99_ns": 552912
+    },
+    "sign": {
+     "mean_ns": 18253,
+     "median_cycles": 40992,
+     "median_ns": 17815,
+     "min_ns": 17470,
+     "n": 60,
+     "ops_per_s": 56132.5,
+     "p95_ns": 19923,
+     "p99_ns": 30562
+    },
+    "verify": {
+     "mean_ns": 19527,
+     "median_cycles": 45050,
+     "median_ns": 19577,
+     "min_ns": 18498,
+     "n": 60,
+     "ops_per_s": 51080.3,
+     "p95_ns": 19749,
+     "p99_ns": 21652
+    }
+   },
+   "parameter_set": "chord_structured/k=8",
+   "q": 103,
+   "sizes": {
+    "public_key": 2774,
+    "secret_key": 664,
+    "signature": 64,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 8392,
+    "sign": 6456,
+    "verify": 6456
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 15615,
+     "bytes": 889254,
+     "peak_live": 164845
+    },
+    "sign": {
+     "allocations": 108,
+     "bytes": 4944,
+     "peak_live": 1020
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 272,
+     "peak_live": 264
+    }
+   },
+   "k": 16,
+   "mode": "chord_structured",
+   "ops": {
+    "keygen": {
+     "mean_ns": 3270482,
+     "median_cycles": 7509518,
+     "median_ns": 3259442,
+     "min_ns": 3192144,
+     "n": 60,
+     "ops_per_s": 306.8,
+     "p95_ns": 3359497,
+     "p99_ns": 3758081
+    },
+    "sign": {
+     "mean_ns": 31369,
+     "median_cycles": 71488,
+     "median_ns": 31052,
+     "min_ns": 30743,
+     "n": 60,
+     "ops_per_s": 32204.0,
+     "p95_ns": 32738,
+     "p99_ns": 35532
+    },
+    "verify": {
+     "mean_ns": 72604,
+     "median_cycles": 168904,
+     "median_ns": 73335,
+     "min_ns": 66187,
+     "n": 60,
+     "ops_per_s": 13636.1,
+     "p95_ns": 74857,
+     "p99_ns": 74930
+    }
+   },
+   "parameter_set": "chord_structured/k=16",
+   "q": 67,
+   "sizes": {
+    "public_key": 19094,
+    "secret_key": 1656,
+    "signature": 96,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 8344,
+    "sign": 6408,
+    "verify": 6408
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 58770,
+     "bytes": 5404454,
+     "peak_live": 1177453
+    },
+    "sign": {
+     "allocations": 190,
+     "bytes": 15960,
+     "peak_live": 1980
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 536,
+     "peak_live": 520
+    }
+   },
+   "k": 32,
+   "mode": "chord_structured",
+   "ops": {
+    "keygen": {
+     "mean_ns": 36122587,
+     "median_cycles": 82093182,
+     "median_ns": 35631081,
+     "min_ns": 34465399,
+     "n": 60,
+     "ops_per_s": 28.1,
+     "p95_ns": 42946602,
+     "p99_ns": 44479961
+    },
+    "sign": {
+     "mean_ns": 83190,
+     "median_cycles": 190904,
+     "median_ns": 82882,
+     "min_ns": 80586,
+     "n": 60,
+     "ops_per_s": 12065.3,
+     "p95_ns": 89108,
+     "p99_ns": 96399
+    },
+    "verify": {
+     "mean_ns": 465428,
+     "median_cycles": 1071966,
+     "median_ns": 465306,
+     "min_ns": 437027,
+     "n": 60,
+     "ops_per_s": 2149.1,
+     "p95_ns": 477452,
+     "p99_ns": 482143
+    }
+   },
+   "parameter_set": "chord_structured/k=32",
+   "q": 131,
+   "sizes": {
+    "public_key": 141590,
+    "secret_key": 5176,
+    "signature": 160,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 8360,
+    "sign": 6424,
+    "verify": 6424
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 6250,
+     "bytes": 380964,
+     "peak_live": 25581
+    },
+    "sign": {
+     "allocations": 66,
+     "bytes": 1744,
+     "peak_live": 540
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 144,
+     "peak_live": 136
+    }
+   },
+   "k": 8,
+   "mode": "chord_labeled",
+   "ops": {
+    "keygen": {
+     "mean_ns": 514503,
+     "median_cycles": 1178470,
+     "median_ns": 511518,
+     "min_ns": 506068,
+     "n": 60,
+     "ops_per_s": 1955.0,
+     "p95_ns": 534558,
+     "p99_ns": 542249
+    },
+    "sign": {
+     "mean_ns": 18271,
+     "median_cycles": 41500,
+     "median_ns": 18037,
+     "min_ns": 17814,
+     "n": 60,
+     "ops_per_s": 55441.6,
+     "p95_ns": 19750,
+     "p99_ns": 19901
+    },
+    "verify": {
+     "mean_ns": 20046,
+     "median_cycles": 46190,
+     "median_ns": 20072,
+     "min_ns": 19003,
+     "n": 60,
+     "ops_per_s": 49820.6,
+     "p95_ns": 20148,
+     "p99_ns": 21566
+    }
+   },
+   "parameter_set": "chord_labeled/k=8",
+   "q": 103,
+   "sizes": {
+    "public_key": 2774,
+    "secret_key": 736,
+    "signature": 64,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 8344,
+    "sign": 6408,
+    "verify": 6408
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 21565,
+     "bytes": 2223364,
+     "peak_live": 164717
+    },
+    "sign": {
+     "allocations": 108,
+     "bytes": 4944,
+     "peak_live": 1020
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 272,
+     "peak_live": 264
+    }
+   },
+   "k": 16,
+   "mode": "chord_labeled",
+   "ops": {
+    "keygen": {
+     "mean_ns": 3743570,
+     "median_cycles": 8635310,
+     "median_ns": 3748037,
+     "min_ns": 3670966,
+     "n": 60,
+     "ops_per_s": 266.8,
+     "p95_ns": 3825628,
+     "p99_ns": 3979233
+    },
+    "sign": {
+     "mean_ns": 33840,
+     "median_cycles": 76666,
+     "median_ns": 33300,
+     "min_ns": 32231,
+     "n": 60,
+     "ops_per_s": 30030.0,
+     "p95_ns": 39472,
+     "p99_ns": 47169
+    },
+    "verify": {
+     "mean_ns": 75577,
+     "median_cycles": 173182,
+     "median_ns": 75192,
+     "min_ns": 73233,
+     "n": 60,
+     "ops_per_s": 13299.3,
+     "p95_ns": 79520,
+     "p99_ns": 87622
+    }
+   },
+   "parameter_set": "chord_labeled/k=16",
+   "q": 331,
+   "sizes": {
+    "public_key": 19094,
+    "secret_key": 1792,
+    "signature": 96,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 8344,
+    "sign": 6408,
+    "verify": 6408
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 65800,
+     "bytes": 8482508,
+     "peak_live": 1177197
+    },
+    "sign": {
+     "allocations": 190,
+     "bytes": 15960,
+     "peak_live": 1980
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 536,
+     "peak_live": 520
+    }
+   },
+   "k": 32,
+   "mode": "chord_labeled",
+   "ops": {
+    "keygen": {
+     "mean_ns": 37385424,
+     "median_cycles": 85189792,
+     "median_ns": 36975005,
+     "min_ns": 34896589,
+     "n": 60,
+     "ops_per_s": 27.0,
+     "p95_ns": 47905416,
+     "p99_ns": 51467520
+    },
+    "sign": {
+     "mean_ns": 84097,
+     "median_cycles": 191592,
+     "median_ns": 83180,
+     "min_ns": 82613,
+     "n": 60,
+     "ops_per_s": 12022.1,
+     "p95_ns": 86822,
+     "p99_ns": 96527
+    },
+    "verify": {
+     "mean_ns": 449301,
+     "median_cycles": 1042728,
+     "median_ns": 452615,
+     "min_ns": 418482,
+     "n": 60,
+     "ops_per_s": 2209.4,
+     "p95_ns": 460022,
+     "p99_ns": 464121
+    }
+   },
+   "parameter_set": "chord_labeled/k=32",
+   "q": 1171,
+   "sizes": {
+    "public_key": 141590,
+    "secret_key": 5440,
+    "signature": 160,
+    "signature_format": "dense"
+   },
+   "stack_bytes": {
+    "keygen": 8376,
+    "sign": 6440,
+    "verify": 6440
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 4437,
+     "bytes": 139494,
+     "peak_live": 5038
+    },
+    "sign": {
+     "allocations": 69,
+     "bytes": 1820,
+     "peak_live": 540
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 104,
+     "peak_live": 96
+    }
+   },
+   "k": 8,
+   "mode": "tri_chord",
+   "ops": {
+    "keygen": {
+     "mean_ns": 205303,
+     "median_cycles": 472160,
+     "median_ns": 204954,
+     "min_ns": 200916,
+     "n": 60,
+     "ops_per_s": 4879.1,
+     "p95_ns": 211319,
+     "p99_ns": 214899
+    },
+    "sign": {
+     "mean_ns": 17836,
+     "median_cycles": 39896,
+     "median_ns": 17339,
+     "min_ns": 17086,
+     "n": 60,
+     "ops_per_s": 57673.5,
+     "p95_ns": 19129,
+     "p99_ns": 22169
+    },
+    "verify": {
+     "mean_ns": 10770,
+     "median_cycles": 24706,
+     "median_ns": 10747,
+     "min_ns": 10665,
+     "n": 60,
+     "ops_per_s": 93049.2,
+     "p95_ns": 10825,
+     "p99_ns": 12350
+    }
+   },
+   "parameter_set": "tri_chord/k=8",
+   "q": 103,
+   "sizes": {
+    "public_key": 242,
+    "secret_key": 720,
+    "signature": 40,
+    "signature_format": "packed"
+   },
+   "stack_bytes": {
+    "keygen": 8392,
+    "sign": 6456,
+    "verify": 6456
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 15653,
+     "bytes": 656643,
+     "peak_live": 14948
+    },
+    "sign": {
+     "allocations": 111,
+     "bytes": 5084,
+     "peak_live": 1020
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 176,
+     "peak_live": 168
+    }
+   },
+   "k": 16,
+   "mode": "tri_chord",
+   "ops": {
+    "keygen": {
+     "mean_ns": 900657,
+     "median_cycles": 2054476,
+     "median_ns": 891727,
+     "min_ns": 884886,
+     "n": 60,
+     "ops_per_s": 1121.4,
+     "p95_ns": 956951,
+     "p99_ns": 983617
+    },
+    "sign": {
+     "mean_ns": 31871,
+     "median_cycles": 73152,
+     "median_ns": 31774,
+     "min_ns": 30757,
+     "n": 60,
+     "ops_per_s": 31472.3,
+     "p95_ns": 33310,
+     "p99_ns": 34317
+    },
+    "verify": {
+     "mean_ns": 13963,
+     "median_cycles": 32036,
+     "median_ns": 13928,
+     "min_ns": 13803,
+     "n": 60,
+     "ops_per_s": 71797.8,
+     "p95_ns": 14098,
+     "p99_ns": 15472
+    }
+   },
+   "parameter_set": "tri_chord/k=16",
+   "q": 67,
+   "sizes": {
+    "public_key": 677,
+    "secret_key": 1730,
+    "signature": 50,
+    "signature_format": "packed"
+   },
+   "stack_bytes": {
+    "keygen": 8392,
+    "sign": 6456,
+    "verify": 6456
+   }
+  },
+  {
+   "heap": {
+    "keygen": {
+     "allocations": 58813,
+     "bytes": 3614953,
+     "peak_live": 50720
+    },
+    "sign": {
+     "allocations": 193,
+     "bytes": 16228,
+     "peak_live": 1980
+    },
+    "verify": {
+     "allocations": 3,
+     "bytes": 312,
+     "peak_live": 304
+    }
+   },
+   "k": 32,
+   "mode": "tri_chord",
+   "ops": {
+    "keygen": {
+     "mean_ns": 5000807,
+     "median_cycles": 11413602,
+     "median_ns": 4953899,
+     "min_ns": 4912223,
+     "n": 60,
+     "ops_per_s": 201.9,
+     "p95_ns": 5271216,
+     "p99_ns": 5402168
+    },
+    "sign": {
+     "mean_ns": 81933,
+     "median_cycles": 189900,
+     "median_ns": 82445,
+     "min_ns": 78940,
+     "n": 60,
+     "ops_per_s": 12129.3,
+     "p95_ns": 84395,
+     "p99_ns": 95238
+    },
+    "verify": {
+     "mean_ns": 24821,
+     "median_cycles": 57062,
+     "median_ns": 24795,
+     "min_ns": 24682,
+     "n": 60,
+     "ops_per_s": 40330.7,
+     "p95_ns": 24925,
+     "p99_ns": 26386
+    }
+   },
+   "parameter_set": "tri_chord/k=32",
+   "q": 131,
+   "sizes": {
+    "public_key": 2556,
+    "secret_key": 5284,
+    "signature": 83,
+    "signature_format": "packed"
+   },
+   "stack_bytes": {
+    "keygen": 8400,
+    "sign": 6456,
+    "verify": 6456
+   }
+  }
+ ],
+ "samples": 60
+}

@@ -1,0 +1,71 @@
+# Build outputs (the repository builds from source; binaries are never committed)
+tests/run_tests
+tests/gen_vectors
+tests/export_instance
+bench/run_bench
+build/
+ci-artifacts/
+*.o
+*.a
+*.so
+*.dSYM/
+*.exe
+*.obj
+
+# Fuzzing runtime state (seed + regression corpora under production/fuzz/corpus ARE tracked)
+production/fuzz/work/
+crash-*
+leak-*
+timeout-*
+oom-*
+*.profraw
+*.profdata
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Never commit secrets or private key material
+*.pem
+*.key
+*.p12
+*.gpg
+.env
+.env.*
+
+# Core dumps from fuzz / valgrind crashes (the standalone driver lets crashes dump core)
+core
+core.*
+vgcore.*
+
+# nix build outputs (result symlinks)
+result
+result-*
+
+# clangd / IDE tooling
+compile_commands.json
+.cache/
+
+# Sage preparser output (regenerated from analysis/*.sage)
+analysis/*.sage.py
+
+# Release assembly run outside ci-artifacts/
+release/
+
+# Not published on the public branch: internal notes, third-party papers,
+# working documents, every private markdown document, local tool settings
+# (all kept on disk, untracked). Only the readme and the security policy are public.
+docs/
+articles/
+.claude/
+TRI-DESIGN.org
+*.md
+!/README.md
+!/SECURITY.md

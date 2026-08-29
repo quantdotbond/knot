@@ -1,0 +1,158 @@
+{
+ "record": "findings-registry",
+ "record_version": 1,
+ "scope": "KNOT cryptographic core (include/ccts/), not modified by the assurance layer",
+ "core_tree_digest_sha256": "f6c7ec99058431b4a6c3ea7d6556a678f52e22103be28c08d719f8a2de79386d",
+ "policy": "Findings are documented and reproduced by CI (status known-fail); the assurance layer does not alter the core. A finding that stops reproducing makes CI report xpass so this registry is updated deliberately.",
+ "severity_scale": {
+  "high": "memory-safety, crash, hang or incorrect output reachable from untrusted input, or a property a deployment would rely on",
+  "medium": "design-level deviation from what a production verifier should provide; no memory-safety impact",
+  "low": "hygiene / diagnostics; no behavioural impact"
+ },
+ "findings": [
+  {
+   "id": "KNOT-CORE-001",
+   "title": "unsigned __int128 in ntt.hpp: 32-bit targets and MSVC do not compile",
+   "severity": "medium",
+   "class": "portability",
+   "location": "include/ccts/ntt.hpp:27",
+   "ci_checks": [
+    "cross-32bit-gcc-m32",
+    "core-diagnostics"
+   ],
+   "status": "open",
+   "reproduction": "g++ -std=c++20 -m32 -Iinclude -Iproduction/adapter -Iproduction/rng -Iproduction/tests production/tests/kat_test.cpp",
+   "expected": "compiles on every C++20 target",
+   "observed": "error: expected primary-expression before '(' token (no __int128 on i386); also -Wpedantic warning on 64-bit",
+   "required_core_change": "portable 64x64->128 multiplication mod the Goldilocks prime (e.g. 32-bit limb arithmetic or a compiler-specific fallback)"
+  },
+  {
+   "id": "KNOT-CORE-002",
+   "title": "ByteReader::bytes() copies an attacker-controlled length without a bounds check (heap-buffer-overflow read)",
+   "severity": "high",
+   "class": "memory-safety",
+   "location": "include/ccts/serialize.hpp:135-140",
+   "ci_checks": [
+    "fuzz-standalone-fuzz_sig_packed_raw"
+   ],
+   "status": "open",
+   "reproduction": "build/production/gcc-asan/fuzz/fuzz_sig_packed_raw_standalone production/fuzz/corpus/fuzz_sig_packed_raw/regressions/",
+   "expected": "malformed encodings are rejected",
+   "observed": "AddressSanitizer: heap-buffer-overflow READ in ByteReader::bytes() via deserialize_signature_packed (also reachable from PublicKey::deserialize for support_seed/payload)",
+   "required_core_change": "bounds-check n against remaining bytes in ByteReader::bytes() (and make u8/u16/u32 failures rejections rather than exceptions-by-accident)",
+   "adapter_mitigation": "knot_adapter::signature_from_bytes_* and validate_public_key_bytes validate framing before calling the core"
+  },
+  {
+   "id": "KNOT-CORE-003",
+   "title": "verify() accepts non-canonical (scaled) u and v: signature malleability",
+   "severity": "medium",
+   "class": "design",
+   "location": "include/ccts/scheme.hpp:787-820",
+   "ci_checks": [
+    "test-production-*-negative (KNOWN_DEVIATION)"
+   ],
+   "status": "open",
+   "reproduction": "production/tests/negative_test.cpp: scale u by any nonzero scalar; verify still returns true",
+   "expected": "a production verifier accepts exactly the canonical projective representatives the signer emits (strong unforgeability)",
+   "observed": "(q-1)^2 distinct encodings of every signature verify; EUF-CMA unaffected, SUF-CMA not provided",
+   "required_core_change": "reject u/v whose first nonzero coordinate is not 1 (matches the signer's projectivize())"
+  },
+  {
+   "id": "KNOT-CORE-004",
+   "title": "deserialize_signature_packed accepts non-canonical radix payloads",
+   "severity": "medium",
+   "class": "design",
+   "location": "include/ccts/serialize.hpp:99-111, scheme.hpp:400-410",
+   "ci_checks": [
+    "test-production-*-negative (KNOWN_DEVIATION)"
+   ],
+   "status": "open",
+   "reproduction": "production/tests/negative_test.cpp: add q^n to the packed integer (fits in the same byte length); raw deserializer yields the same (u, v)",
+   "expected": "one byte string per signature",
+   "observed": "multiple byte strings decode to the same signature and verify",
+   "required_core_change": "reject payload integers >= q^n (re-encode and compare, or check the leading limb)",
+   "adapter_mitigation": "signature_from_bytes_packed re-serializes and requires byte equality"
+  },
+  {
+   "id": "KNOT-CORE-005",
+   "title": "PublicKey::deserialize performs no structural validation: heap overflow write, unbounded allocation, division by zero",
+   "severity": "high",
+   "class": "memory-safety",
+   "location": "include/ccts/scheme.hpp:349-381, serialize.hpp:128-134, field.hpp:11",
+   "ci_checks": [
+    "fuzz-standalone-fuzz_pk_raw"
+   ],
+   "status": "open",
+   "reproduction": "build/production/gcc-asan/fuzz/fuzz_pk_raw_standalone production/fuzz/corpus/fuzz_pk_raw/regressions/KNOT-CORE-005-tri-nz-out-of-range.bin",
+   "expected": "malformed public keys are rejected",
+   "observed": "(a) TRI branch: nz read from the bit stream is not checked against k+1 -> heap-buffer-overflow WRITE at scheme.hpp:370 (AddressSanitizer); (b) dense branch: n1,n2,n3 from the header are multiplied and allocated without limit or consistency check against k -> multi-terabyte allocation attempt / OOM kill (ASan: 0x8340003840000-byte request); (c) k and q are not validated: non-prime q, q <= 4k, q >= 2^16 and q < 3 are accepted (Field asserts q >= 3 only in debug builds; q = 0 happens to be rejected later by verify's element range check); (d) element values are not checked to be < q, so non-canonical public keys are accepted",
+   "required_core_change": "validate k, q (prime, q > 4k, q < 2^16), tensor dimensions against k, element ranges, nz < k+1, and payload length before allocating",
+   "adapter_mitigation": "knot_adapter::validate_public_key_bytes performs all of these checks"
+  },
+  {
+   "id": "KNOT-CORE-006",
+   "title": "Core does not compile cleanly under strict diagnostics",
+   "severity": "low",
+   "class": "hygiene",
+   "location": "include/ccts/serialize.hpp:118,137; fastpoly.hpp:60; vwz.hpp:40; scheme.hpp:677; ntt.hpp:27",
+   "ci_checks": [
+    "core-diagnostics"
+   ],
+   "status": "open",
+   "reproduction": "scripts/ci.sh core_diagnostics (ci-artifacts/results/core-diagnostics-warnings.txt)",
+   "expected": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference clean",
+   "observed": "-Wpedantic (__int128), -Wconversion (u16 shift), -Wsign-conversion (iterator arithmetic), -Wnull-dereference (vector indexing) warnings",
+   "required_core_change": "explicit casts / index types; none of the warnings indicate a functional defect on the tested platforms"
+  },
+  {
+   "id": "KNOT-CORE-007",
+   "title": "Signing has secret-dependent control flow and memory access (not constant-time)",
+   "severity": "high",
+   "class": "side-channel",
+   "location": "include/ccts/scheme.hpp (sign), vwz.hpp (vwz_preimage), poly.hpp, matrix.hpp, field.hpp (inv/pow)",
+   "ci_checks": [
+    "sidechannel-ctgrind-*",
+    "sidechannel-dudect-*"
+   ],
+   "status": "open (documented limitation: README 'not constant-time')",
+   "reproduction": "valgrind --error-exitcode=99 --xml=yes --xml-file=out.xml build/production/valgrind/ctgrind_knot tensor_reference/k=8 ; build/production/gcc-release/dudect_knot (KNOT_DUDECT_SAMPLES=20000 for the long run)",
+   "expected": "no secret-dependent branches or addresses in sign()",
+   "observed": "Valgrind memcheck with secret-key bytes marked undefined reports 88 UninitCondition (secret-dependent conditional jumps) and 13-14 UninitValue events during a single sign() at k=8 in each of tensor_reference, chord_structured and tri_chord (ci-artifacts/results/sidechannel-ctgrind-*-report.json). The dudect-style Welch t-test on sign() with two keys does NOT resolve a timing difference at 500 samples per class (max |t| <= 3.7 < 4.5); the nightly 20000-sample run is the relevant statistical evidence and has not yet been evaluated. The verify() valid-vs-salt-flipped experiment shows |t| = 7.4 on tensor_reference (early rejection on public data, informational).",
+   "required_core_change": "constant-time field arithmetic (branchless reduction, Fermat inversion without early exits is already branchless but pow's loop over the public exponent is fine; the data-dependent parts are the sphere/zero-set partition in vwz_preimage, the monomial permutation application, and rejection sampling), or an explicit non-CT statement in the deployment profile"
+  },
+  {
+   "id": "KNOT-CORE-008",
+   "title": "SHAKE256 implementation is byte-order dependent: wrong output on big-endian hosts",
+   "severity": "high",
+   "class": "portability",
+   "location": "include/ccts/shake.hpp:24-56 (reinterpret_cast<uint8_t*>(state_) lane access)",
+   "ci_checks": [
+    "cross-s390x-bigendian-qemu"
+   ],
+   "status": "open",
+   "reproduction": "s390x-unknown-linux-gnu-g++ ... production/tests/portability_test.cpp ; qemu-s390x -L <sysroot> ./portability_test",
+   "expected": "SHAKE256('') == 46b9dd2b... on every host",
+   "observed": "SHAKE256 KATs fail on s390x (big-endian); consequently every DRBG output, key, digest and signature differs from little-endian hosts and from the KAT corpus",
+   "required_core_change": "load/store lanes as little-endian 64-bit words (byte-wise assembly) instead of aliasing the state array"
+  },
+  {
+   "id": "KNOT-CORE-009",
+   "title": "derive_support relies on assert() for t <= 2k+1: abort in default builds, infinite loop under NDEBUG",
+   "severity": "high",
+   "class": "input-validation",
+   "location": "include/ccts/scheme.hpp:317-343",
+   "ci_checks": [
+    "fuzz-standalone-fuzz_pk_raw"
+   ],
+   "status": "open",
+   "reproduction": "build/production/gcc-asan/fuzz/fuzz_pk_raw_standalone production/fuzz/corpus/fuzz_pk_raw/regressions/KNOT-CORE-009-tri-t-exceeds-slices-hang.bin (assert) ; same binary built with -DNDEBUG hangs",
+   "expected": "a TRI public key with t > 2k+1 is rejected",
+   "observed": "assertion failure (SIGABRT) in the default build; with -DNDEBUG the rejection-sampling loop can never collect t distinct indices and never terminates",
+   "required_core_change": "validate t (k+2 <= t <= 2k+1) and w in PublicKey::deserialize before deriving the support"
+  }
+ ],
+ "core_identity_history": [
+  "51c0e07e25c6e14809ca16b728ba76dedc23355ee996baf2b8c021a848eac2e9 (validated content)",
+  "f6c7ec99058431b4a6c3ea7d6556a678f52e22103be28c08d719f8a2de79386d (comment-only edit: document and planning references removed)"
+ ]
+}

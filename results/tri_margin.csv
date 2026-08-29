@@ -1,0 +1,11 @@
+mode,k,q,m,t,w_on_support,patch,gb_seconds,ideal_dim,ideal_degree,gb_max_degree,solutions,gb_size
+chord_structured,4,19,0,5,4,0,0.039,6,-1,7,-1,32
+chord_structured,4,19,1,6,4,0,0.138,5,-1,6,-1,62
+chord_structured,4,19,2,7,3,0,0.431,4,-1,7,-1,117
+chord_structured,4,19,3,8,4,0,1.061,3,-1,7,-1,217
+chord_structured,4,19,4,9,5,0,0.707,2,-1,5,-1,342
+chord_structured,5,23,0,6,3,0,0.713,7,-1,7,-1,64
+chord_structured,5,23,1,7,3,0,5.819,6,-1,8,-1,128
+chord_structured,5,23,2,8,4,0,116.575,5,-1,10,-1,264
+chord_structured,5,23,3,9,5,0,175.651,4,-1,10,-1,488
+chord_structured,5,23,4,10,6,0,251.259,3,-1,8,-1,836
