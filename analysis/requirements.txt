@@ -3,4 +3,4 @@
 # records the versions actually installed on the evaluated host.
 numpy>=1.26
 pandas>=2.1
-matplotlib>=3.8
+matplotlib>=3.11.1
