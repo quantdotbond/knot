@@ -2,5 +2,5 @@
 # not needed to build, test, or verify KNOT). Pinned lower bounds; the SBOM
 # records the versions actually installed on the evaluated host.
 numpy>=1.26
-pandas>=2.1
+pandas>=3.0.5
 matplotlib>=3.8
