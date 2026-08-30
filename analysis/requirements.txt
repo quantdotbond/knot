@@ -1,6 +1,6 @@
 # Optional dependencies for analysis/analyze.py (statistics and plots only;
 # not needed to build, test, or verify KNOT). Pinned lower bounds; the SBOM
 # records the versions actually installed on the evaluated host.
-numpy>=1.26
+numpy>=2.5.2
 pandas>=2.1
 matplotlib>=3.8
